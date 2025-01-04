@@ -28,6 +28,7 @@ type Interface interface {
 	_GetRulesField(field string) []string
 	Validated() bool
 	Start(c *fiber.Ctx) (Request, error)
+	GetArray(key string) []string
 }
 
 func (r Request) GetString(key string) string {
@@ -216,6 +217,17 @@ func (r Request) Get(key string) interface{} {
 		return ""
 	}
 	return valor
+}
+
+func (r Request) GetArray(key string) []string {
+	valor := r.Form[key]
+	//fmt.Println("Tipo es:", reflect.TypeOf(valor))
+
+	if valor == nil {
+		return nil
+	}
+
+	return FormattedArrayJson(valor)
 }
 
 func (r *Request) Validated() bool {
